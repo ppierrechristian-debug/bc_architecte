@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Appartement Lyon — Rénovation complète · BC Architecte</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --beige:  #f5f0e8;
+      --sand:   #e8dcc8;
+      --clay:   #c4a882;
+      --terre:  #8b6f4e;
+      --dark:   #2a221a;
+      --text:   #3d3028;
+      --muted:  #9a8878;
+      --white:  #fdfaf5;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Jost', sans-serif; background: var(--beige); color: var(--text); font-weight: 300; overflow-x: hidden; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 4rem;
+      background: rgba(245,240,232,.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--sand);
+    }
+    .logo { display: block; text-decoration: none; }
+    .logo img { height: 120px; width: auto; display: block; transition: opacity .3s; }
+    .logo img:hover { opacity: .75; }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: .8rem;
+      font-size: .72rem; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--text); text-decoration: none; transition: color .3s;
+    }
+    .nav-back::before { content: '←'; font-size: 1rem; transition: transform .3s; }
+    .nav-back:hover { color: var(--terre); }
+    .nav-back:hover::before { transform: translateX(-4px); }
+
+    /* ── HERO PROJET ── */
+    .projet-hero {
+      margin-top: 142px;
+      height: 70vh;
+      position: relative; overflow: hidden;
+    }
+    .projet-hero img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 8s ease;
+    }
+    .projet-hero:hover img { transform: scale(1.03); }
+    .projet-hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(42,34,26,.6) 0%, transparent 50%);
+      display: flex; align-items: flex-end;
+      padding: 4rem;
+    }
+    .projet-hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 5vw, 5rem);
+      font-weight: 300; color: var(--beige);
+      line-height: 1.1;
+    }
+    .projet-hero-title em { font-style: italic; color: var(--clay); }
+
+    /* ── FICHE ── */
+    .projet-content {
+      display: grid; grid-template-columns: 1fr 2fr;
+      gap: 6rem; padding: 6rem 4rem;
+      max-width: 1400px; margin: 0 auto;
+    }
+
+    /* fiche technique */
+    .projet-fiche { position: sticky; top: 160px; align-self: start; }
+    .fiche-tag {
+      font-size: .62rem; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 2rem;
+    }
+    .fiche-items { display: flex; flex-direction: column; gap: 0; }
+    .fiche-item {
+      padding: 1.2rem 0; border-bottom: 1px solid var(--sand);
+    }
+    .fiche-item:first-child { border-top: 1px solid var(--sand); }
+    .fiche-label {
+      font-size: .6rem; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: .4rem;
+    }
+    .fiche-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; color: var(--dark);
+    }
+
+    .fiche-desc {
+      margin-top: 2.5rem;
+      font-size: .85rem; line-height: 1.9; color: var(--muted);
+    }
+
+    .btn-contact {
+      display: inline-block; margin-top: 2.5rem;
+      padding: .9rem 2.2rem;
+      background: var(--dark); color: var(--beige);
+      font-size: .7rem; letter-spacing: .18em; text-transform: uppercase;
+      text-decoration: none; transition: background .3s;
+    }
+    .btn-contact:hover { background: var(--terre); }
+
+    /* galerie */
+    .projet-galerie { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .galerie-main { overflow: hidden; cursor: pointer; }
+    .galerie-main img {
+      width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block;
+      transition: transform .6s ease;
+    }
+    .galerie-main:hover img { transform: scale(1.03); }
+
+    .galerie-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+    }
+    .galerie-item { overflow: hidden; cursor: pointer; }
+    .galerie-item img {
+      width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block;
+      transition: transform .6s ease;
+    }
+    .galerie-item:hover img { transform: scale(1.04); }
+
+    /* lightbox */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 999;
+      background: rgba(42,34,26,.95);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s;
+    }
+    .lightbox.open { opacity: 1; pointer-events: all; }
+    .lightbox img {
+      max-width: 90vw; max-height: 90vh;
+      object-fit: contain; display: block;
+    }
+    .lightbox-close {
+      position: absolute; top: 2rem; right: 2rem;
+      font-size: 1.5rem; color: var(--beige); cursor: pointer;
+      background: none; border: none; font-family: 'Jost', sans-serif;
+      opacity: .7; transition: opacity .3s;
+    }
+    .lightbox-close:hover { opacity: 1; }
+    .lightbox-prev, .lightbox-next {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      font-size: 2rem; color: var(--beige); cursor: pointer;
+      background: none; border: none; font-family: 'Jost', sans-serif;
+      opacity: .6; transition: opacity .3s; padding: 1rem;
+    }
+    .lightbox-prev { left: 1rem; }
+    .lightbox-next { right: 1rem; }
+    .lightbox-prev:hover, .lightbox-next:hover { opacity: 1; }
+    .lightbox-counter {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      font-size: .65rem; letter-spacing: .2em; text-transform: uppercase;
+      color: rgba(253,250,245,.5);
+    }
+
+    /* ── PROJETS SUIVANTS ── */
+    .autres-projets { padding: 6rem 4rem; background: var(--white); }
+    .autres-title {
+      font-size: .65rem; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 3rem;
+    }
+    .autres-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .autre-card { text-decoration: none; display: block; }
+    .autre-card-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; background: var(--sand); transition: opacity .3s; }
+    .autre-card:hover .autre-card-img { opacity: .85; }
+    .autre-card-info { padding: 1rem 0; }
+    .autre-card-cat { font-size: .6rem; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin-bottom: .3rem; }
+    .autre-card-name { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--dark); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--dark); color: var(--sand); padding: 2.5rem 4rem; display: flex; align-items: center; justify-content: space-between; }
+    .footer-logo img { height: 56px; width: auto; filter: invert(1) brightness(.75); }
+    .footer-copy { font-size: .65rem; letter-spacing: .12em; color: var(--muted); }
+
+    /* ── ANIMATIONS ── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 2rem; }
+      .projet-hero { margin-top: 100px; height: 50vh; }
+      .projet-content { grid-template-columns: 1fr; padding: 3rem 2rem; gap: 3rem; }
+      .projet-fiche { position: static; }
+      .galerie-grid { grid-template-columns: 1fr; }
+      .autres-projets { padding: 4rem 2rem; }
+      .autres-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 1rem; padding: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="logo">
+    <img src="logo_2.gif" alt="BC Architecte"/>
+  </a>
+  <a href="index.html" class="nav-back" onclick="sessionStorage.setItem('scrollTo','projets')">Retour aux projets</a>
+</nav>
+
+<!-- HERO -->
+<div class="projet-hero">
+  <img src="002.webp" alt="Appartement Lyon — Rénovation complète"/>
+  <div class="projet-hero-overlay">
+    <h1 class="projet-hero-title">
+      Appartement Lyon<br><em>Rénovation complète</em>
+    </h1>
+  </div>
+</div>
+
+<!-- CONTENU -->
+<div class="projet-content">
+
+  <!-- FICHE TECHNIQUE -->
+  <aside class="projet-fiche reveal">
+    <p class="fiche-tag">Fiche projet</p>
+    <div class="fiche-items">
+      <div class="fiche-item">
+        <p class="fiche-label">Lieu</p>
+        <p class="fiche-value">Lyon, France</p>
+      </div>
+      <div class="fiche-item">
+        <p class="fiche-label">Année</p>
+        <p class="fiche-value">À renseigner</p>
+      </div>
+      <div class="fiche-item">
+        <p class="fiche-label">Surface</p>
+        <p class="fiche-value">À renseigner m²</p>
+      </div>
+      <div class="fiche-item">
+        <p class="fiche-label">Programme</p>
+        <p class="fiche-value">Rénovation complète</p>
+      </div>
+    </div>
+
+    <p class="fiche-desc">
+      Rénovation complète d'un appartement lyonnais. Le projet réinterprète les volumes 
+      existants en cherchant l'épure et la lumière. Les matières choisies — bois clair, 
+      marbre, enduits blancs — dialoguent avec l'architecture haussmannienne du bâtiment.
+    </p>
+
+    <a href="index.html#contact" class="btn-contact">Nous contacter</a>
+  </aside>
+
+  <!-- GALERIE -->
+  <div class="projet-galerie reveal">
+    <div class="galerie-main" onclick="openLightbox(0)">
+      <img src="002.webp" alt="Vue cuisine et couloir"/>
+    </div>
+    <div class="galerie-grid">
+      <div class="galerie-item" onclick="openLightbox(1)">
+        <img src="004.webp" alt="Chambre suite parentale"/>
+      </div>
+      <div class="galerie-item" onclick="openLightbox(2)">
+        <img src="3.webp" alt="Bibliothèque sur mesure"/>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightboxOutside(event)">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <button class="lightbox-prev" onclick="prevImage(event)">‹</button>
+  <img id="lightbox-img" src="" alt=""/>
+  <button class="lightbox-next" onclick="nextImage(event)">›</button>
+  <span class="lightbox-counter" id="lightbox-counter"></span>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <img src="logo_2.gif" alt="BC Architecte"/>
+  </div>
+  <p class="footer-copy">© 2026 BC Architecte — Tous droits réservés</p>
+</footer>
+
+<script>
+  // Reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Lightbox
+  const images = ['002.webp', '004.webp', '3.webp'];
+  const alts = ['Vue cuisine et couloir', 'Chambre suite parentale', 'Bibliothèque sur mesure'];
+  let current = 0;
+
+  function openLightbox(index) {
+    current = index;
+    updateLightbox();
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function closeLightboxOutside(e) {
+    if (e.target === document.getElementById('lightbox')) closeLightbox();
+  }
+  function updateLightbox() {
+    document.getElementById('lightbox-img').src = images[current];
+    document.getElementById('lightbox-img').alt = alts[current];
+    document.getElementById('lightbox-counter').textContent = (current + 1) + ' / ' + images.length;
+  }
+  function nextImage(e) { e.stopPropagation(); current = (current + 1) % images.length; updateLightbox(); }
+  function prevImage(e) { e.stopPropagation(); current = (current - 1 + images.length) % images.length; updateLightbox(); }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'ArrowRight') nextImage(e);
+    if (e.key === 'ArrowLeft') prevImage(e);
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>
+</body>
+</html>
